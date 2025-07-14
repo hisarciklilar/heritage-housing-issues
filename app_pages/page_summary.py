@@ -18,7 +18,7 @@ def page_summary_body():
 
     st.success(
         f"The project has 2 business requirements:\n"
-        f"* 1. The client is interested in discovering how the house attributes correlate with sale price\n"
-        f"The client is interested in predicting house sale price from"
+        f"* 1. The client is interested in discovering how the house attributes correlate with sale price\n\n"
+        f"* 2. The client is interested in predicting house sale price from"
         f"her four inherited houses and any other house in Ames, Iowa"
     )
