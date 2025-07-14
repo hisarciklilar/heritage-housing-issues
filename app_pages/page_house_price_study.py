@@ -6,7 +6,7 @@ def page_house_price_study_body():
 
     df = load_house_price_data()
 
-    st.write("*** House Price Exploratory Analysis")
+    st.write("### House Price Exploratory Analysis")
     st.info(
         f"* The client is interested in discovering how the house attributes correlate with sale price\n"
     )
