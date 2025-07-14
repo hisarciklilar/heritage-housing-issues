@@ -137,6 +137,4 @@ Although your friend has an excellent understanding of property prices in her ow
 
 ## Acknowledgements (optional)
 
-
-* In case you would like to thank the people that provided support through this project.
-
+* Contents of `multipage.py` are copied from Code Instiude Walkthrough Project 2: Churnometer files 
