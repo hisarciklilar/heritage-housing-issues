@@ -8,9 +8,14 @@ def page_house_price_study_body():
 
     df = load_house_price_data()
 
-    st.write("### House Price Exploratory Analysis")
+    st.write("## Exploratory Analysis of the Housing Market in Ames, Iowa")
     st.info(
-        f"* The client is interested in discovering how the house attributes correlate with sale price\n"
+        f"* This section provides an understanding of house attributes and the sale price\n"
+        f"in the Ames, Iowa housing market"
+    )
+
+    st.write(
+        "### Overview of House Prices and Attributes"
     )
 
     # Brief information about data 
@@ -21,7 +26,13 @@ def page_house_price_study_body():
         )
 
         st.write(df.head(10))
-    
+
+        # Info on missingness
+        missing = df.isnull().sum()
+        missing = missing[missing > 0].sort_values(ascending=False)
+        st.write("Number of Missing Observations for Indicators:\n")
+        st.write(missing)
+
     st.write("---")
 
     # Distribution of numeric variables
@@ -29,7 +40,7 @@ def page_house_price_study_body():
     cat_cols = df.select_dtypes(include='object').columns
 
     st.write("### Distribution of Variables in Data")
-    selected_col = st.selectbox("Select a numeric column", df.columns)
+    selected_col = st.selectbox("Select a column", df.columns)
 
     if selected_col in numeric_cols:
         st.write(f"{selected_col} is a numeric variable")
