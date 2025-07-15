@@ -1,0 +1,12 @@
+*.ipynb
+*.csv
+*.tsv
+*.xlsx
+*.zip
+*.pkl
+*.joblib
+__pycache__/
+.ipynb_checkpoints/
+*.log
+data/
+notebooks/
