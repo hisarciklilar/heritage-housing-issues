@@ -68,6 +68,7 @@ Although your friend has an excellent understanding of property prices in her ow
 * Exploratory analysis of the housing market in Ames, Iowa
   * Overview of house prices and attributes
   * Distribution of variables in data
+  * Summary statistics for variables in data
 
 ### Page 3: Correlate House Price with Features
 
