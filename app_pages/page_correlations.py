@@ -16,7 +16,7 @@ def page_correlations():
     )
 
     st.write(
-        "### Correlation of House Prices and Attributes"
+        "### Correlation Coefficients of House Sale Prices with House Features"
     )
 
     # Correlation of indicators with house price 
@@ -27,6 +27,10 @@ def page_correlations():
         st.write(corr)
 
     st.write("---")
+
+    st.write(
+        "### Correlation Heatmap of House Sale Price with House Features"
+    )
 
     if st.checkbox("Reveal correlation heatmap of house price and features"):
 
