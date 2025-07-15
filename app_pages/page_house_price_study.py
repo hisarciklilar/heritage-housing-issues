@@ -26,22 +26,40 @@ def page_house_price_study_body():
 
     # Distribution of numeric variables
     numeric_cols = df.select_dtypes(include=np.number).columns
+    cat_cols = df.select_dtypes(include='object').columns
 
-    st.write("### Distribution of Numeric Variables")
-    selected_col = st.selectbox("Select a numeric column", numeric_cols)
+    st.write("### Distribution of Variables in Data")
+    selected_col = st.selectbox("Select a numeric column", df.columns)
 
-    # Create the figure
-    fig, axs = plt.subplots(2, 1, figsize=(6, 6), gridspec_kw={'height_ratios': [1, 3]})
+    if selected_col in numeric_cols:
+        st.write(f"{selected_col} is a numeric variable")
 
-    # Boxplot (top)
-    sns.boxplot(x=df[selected_col].dropna(), ax=axs[0], color='skyblue')
-    axs[0].set(title=f"Boxplot: {selected_col}")
-    axs[0].set(xlabel='')
-    axs[0].tick_params(axis='x', labelbottom=False)
+        fig, axs = plt.subplots(2, 1, figsize=(6, 6), gridspec_kw={'height_ratios': [1, 3]})
 
-    # Histogram with KDE (bottom)
-    sns.histplot(df[selected_col].dropna(), kde=True, ax=axs[1], color='skyblue')
-    axs[1].set(title=f"Histogram: {selected_col}", xlabel=selected_col, ylabel="Count")
+        # Boxplot (top)
+        sns.boxplot(x=df[selected_col].dropna(), ax=axs[0])
+        axs[0].set(title=f"Boxplot: {selected_col}")
+        axs[0].set(xlabel='')
+        axs[0].tick_params(axis='x', labelbottom=False)
 
-    plt.tight_layout()
-    st.pyplot(fig)
+        # Histogram with KDE (bottom)
+        sns.histplot(df[selected_col].dropna(), kde=True, ax=axs[1])
+        axs[1].set(title=f"Histogram: {selected_col}", xlabel=selected_col, ylabel="Count")
+
+        plt.tight_layout()
+        st.pyplot(fig)
+
+    elif selected_col in cat_cols:
+
+        st.write(f"{selected_col} is a categorical variable")
+
+        fig, ax = plt.subplots(figsize=(8, 4))
+
+        # Bar plot        
+        df[selected_col].value_counts().plot(kind='bar')
+        plt.title(f"Category Counts: {selected_col}")
+        plt.xlabel(selected_col)
+        plt.ylabel("Frequency")
+        
+        plt.tight_layout()
+        st.pyplot(fig)
