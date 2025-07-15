@@ -1,5 +1,4 @@
 *.ipynb
-*.csv
 *.tsv
 *.xlsx
 *.zip
@@ -10,3 +9,6 @@ __pycache__/
 *.log
 data/
 notebooks/
+jupyter_notebooks
+kaggle.json
+.gitignore
