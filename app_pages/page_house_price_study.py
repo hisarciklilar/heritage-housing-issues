@@ -35,12 +35,12 @@ def page_house_price_study_body():
 
     st.write("---")
 
-    # Distribution of numeric variables
+    # Distribution of variables
     numeric_cols = df.select_dtypes(include=np.number).columns
     cat_cols = df.select_dtypes(include='object').columns
 
     st.write("### Distribution of Variables in Data")
-    selected_col = st.selectbox("Select a column", df.columns)
+    selected_col = st.selectbox("Select a column", df.columns, key='selectbox_1')
 
     if selected_col in numeric_cols:
         st.write(f"{selected_col} is a numeric variable")
@@ -74,3 +74,15 @@ def page_house_price_study_body():
         
         plt.tight_layout()
         st.pyplot(fig)
+
+    # Summary statistics of variables
+    st.write("### Summary statistics for Variables in Data")
+    selected_col = st.selectbox("Select a column", df.columns, key='selectbox_2')
+
+    if selected_col in numeric_cols:
+        st.write(f"Descriptive statistics for variable {selected_col}")
+        st.write(df[selected_col].describe())
+
+    elif selected_col in cat_cols:
+        st.write(f"Frequency distribution for variable {selected_col}")
+        st.write(df[selected_col].value_counts(dropna=False))
