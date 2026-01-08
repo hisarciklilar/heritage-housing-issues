@@ -11,7 +11,7 @@ def page_correlations():
     st.write("## Correlation Analysis of the House Prices with House Features")
     st.info(
         f"* This section provides information on how house attributes " 
-        f"measured in numerical scale correlate with house price"
+        f"correlate with house price"
         f"in the Ames, Iowa housing market"
     )
 
@@ -31,7 +31,7 @@ def page_correlations():
             "while a coefficient close to -1 implies a strong negative correlation. "
             "A coefficient around 0 indicates no correlation."
         )
-    
+   
         st.write(corr)
 
         st.success(
@@ -90,3 +90,122 @@ def page_correlations():
             "Similarly, there is a strong correlation (0.83) between year the house was built and the year garage was built. "
             "At the modelling stage, these correlations should be considered to avoid multicollinearity issues."
         )
+    
+    st.write("---")
+
+    st.write("### Sale Price Relationships with Key House Features")
+
+    if st.checkbox("Visualize relationship between house price and overall quality rating of the house"):
+        fig, ax = plt.subplots()
+        sns.boxplot(data=df, x="OverallQual", y="SalePrice", ax=ax)
+        ax.set_title("Sale Price by Overall Quality Rating")
+        ax.set_xlabel("Overall Quality")
+        ax.set_ylabel("Sale Price")
+        st.pyplot(fig)
+    
+        st.success(
+        f"Sale prices increase markedly with increasing levels of overall quality rating. "
+        f"The increase appears to be exponential. "
+        f"As the overall quality increases, the median sale price changes at an increasing rate. "
+        f"We also observe higher variation in house prices at increasing levels of overall house quality. "
+        f"This may be an indication of heteroscedasticity in the data (something to be considered during modelling)." 
+        )
+
+    if st.checkbox("Visualize relationship between house price and size of above-ground living area"):
+        fig, ax = plt.subplots()
+        sns.scatterplot(data=df, x="GrLivArea", y="SalePrice", ax=ax)
+        ax.set_title("Sale Price vs Above-Ground Living Area")
+        ax.set_xlabel("Above-Ground Living Area (sq ft)")
+        ax.set_ylabel("Sale Price")
+        st.pyplot(fig)
+
+        st.success(
+            "Larger above-ground living area is associated with higher sale prices. "
+            "This indicates that house size is a key determinant of value. Larger above-ground living areas show "
+            "greater variability in price, an indicator of heteroscedasticity that should be considered during modeling."
+        )
+
+    if st.checkbox("Visualize relationship between house price and total basement size"):
+        fig, ax = plt.subplots()
+        sns.scatterplot(data=df, x="TotalBsmtSF", y="SalePrice", ax=ax)
+        ax.set_title("Sale Price vs Total Basement Area")
+        ax.set_xlabel("Total Basement Area (sq ft)")
+        ax.set_ylabel("Sale Price")
+        st.pyplot(fig)
+
+        st.success(
+            "Houses with larger basements tend to sell for more, indicating that "
+            "basement space contributes positively to perceived value. The spread across sale prices "
+            "suggests that in addition to size, basement quality and finish may also matter."
+        )
+
+    if st.checkbox("Visualize relationship between house price and garage size"):
+        fig, ax = plt.subplots()
+        sns.scatterplot(data=df, x="GarageArea", y="SalePrice", ax=ax)
+        ax.set_title("Sale Price vs Garage Area")
+        ax.set_xlabel("Garage Area (sq ft)")
+        ax.set_ylabel("Sale Price")
+        st.pyplot(fig)
+
+        st.success(
+            "Larger garage areas are broadly associated with higher sale prices. "
+            "This reflects the value buyers place on garage capacity in Ames."
+        )
+
+    if st.checkbox("Visualize relationship between house price and year of built"):
+        fig, ax = plt.subplots()
+        sns.scatterplot(data=df, x="YearBuilt", y="SalePrice", ax=ax)
+        ax.set_title("Sale Price vs Year Built")
+        ax.set_xlabel("Year Built")
+        ax.set_ylabel("Sale Price")
+        st.pyplot(fig)
+
+        st.success(
+            "Most recently built houses tend to have higher prices, suggesting a premium for "
+            "modern construction. However, the spread of points indicates that other factors may also play "
+            "important roles. the relationship is not as strong as with other features such as overall quality or size."
+        )
+
+    if st.checkbox("Visualize relationship between house price and kitchen quality"):
+        kitchen_order = ["Po", "Fa", "TA", "Gd", "Ex"]
+        kitchen_labels = {
+            "Po": "Poor",
+            "Fa": "Fair",
+            "TA": "Typical / Average",
+            "Gd": "Good",
+            "Ex": "Excellent"
+        }
+                     
+        fig, ax = plt.subplots()
+        sns.boxplot(
+            data=df,
+            x="KitchenQual",
+            y="SalePrice",
+            order=kitchen_order,
+            ax=ax
+        )
+        ax.set_xticklabels([kitchen_labels[k] for k in kitchen_order])
+        ax.set_title("Sale Price by Kitchen Quality")
+        ax.set_xlabel("Kitchen Quality")
+        ax.set_ylabel("Sale Price")
+        st.pyplot(fig)
+
+        st.success(
+            "Higher kitchen quality is associated with higher sale prices, "
+            "highlighting the importance of kitchens as a visible quality signal to buyers."
+            "We observe higher price variation at mid to high kitchen quality levels."
+        )
+
+    st.write("---")
+
+    st.markdown("### Conclusions")
+    st.markdown(
+        """
+    - Sale price in Ames is strongly influenced by **house quality**, **living space**, and
+    **key amenities** such as basements and garages.
+    - The correlation coefficients and the visual insights help identify which attributes are most relevant when pricing
+    the client's inherited properties.
+    - The same features will be prioritised as inputs to the machine-learning model used
+    for sale price prediction.
+    """
+    )
