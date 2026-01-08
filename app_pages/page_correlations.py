@@ -36,14 +36,16 @@ def page_correlations():
 
         st.success(
             f"**Key Insights from the correlation table:**\n\n"
-            f"The top five house features that have the highest correlation with house sale price are:\n\n"
-            f"* Overall material and finish quality of the house (`OverallQual`) with a correlation coefficient of 0.79,\n"
-            f"* Above grade (ground) living area in square feet (`GrLivArea`) with a correlation coefficient of 0.71,\n"
-            f"* Size of garage in square feet (`GarageArea`) with a correlation coefficient of 0.62,\n"
-            f"* Total square feet of basement area (`TotalBsmtSF`) with a correlation coefficient of 0.61, and\n"
-            f"* First Floor square feet (`1stFlrSF`) with a correlation coefficient of 0.61.\n\n"
-            f"While these features show strong positive correlations with house sale price, " 
-            f"unfinished square feet of basement area (`BsmtUnfSF`) shows a weak negative correlation with a correlation coefficient of -0.18."
+            f"* Overall material and finish quality of the house (`OverallQual`) and above ground living area (`GrLivArea`) "
+            f"have strong correlations (0.79 and 0.71, respectively) with house price indicating that "
+            f"houses with better quality and larger above ground living areas tend to have higher sale prices.\n"
+            f"* Size of garage (`GarageArea`), size of basement area (`TotalBsmtSF`) show moderate to strong correlation (0.62 and 0.61 respectively) "
+            f"confirming that the larger houses are priced higher. \n"
+            f"* Year of built (`YearBuilt`) and remodel date (`YearRemodAdd`) show moderate positive correlation (0.52 and 0.51), indicating "
+            f"that newer houses tend to have higher sale prices.\n"
+            f"* Open porch area (`OpenPorchSF`), wood deck area (`WoodDeckSF`), and linear feet of street connected to the property (`LotFrontage`) "
+            f"show weak positive correlations (0.32, 0.25, 0.35 respectively) indicating that features related to outdoor space have a smaller impact on house sale price.\n"
+            f"* Unfinished square feet of basement area (`BsmtUnfSF`) shows a weak negative correlation with a correlation coefficient of -0.18."
         )
 
     st.write("---")
