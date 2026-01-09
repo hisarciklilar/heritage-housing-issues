@@ -11,7 +11,7 @@
 |:----|:----|:----|
 |1stFlrSF|First Floor square feet|334 - 4692|
 |2ndFlrSF|Second-floor square feet|0 - 2065|
-|BedroomAbvGr|Bedrooms above grade (does NOT include basement bedrooms)|0 - 8|
+|BedroomAbvGr|Bedrooms above ground (does NOT include basement bedrooms)|0 - 8|
 |BsmtExposure|Refers to walkout or garden level walls|Gd: Good Exposure; Av: Average Exposure; Mn: Minimum Exposure; No: No Exposure; None: No Basement|
 |BsmtFinType1|Rating of basement finished area|GLQ: Good Living Quarters; ALQ: Average Living Quarters; BLQ: Below Average Living Quarters; Rec: Average Rec Room; LwQ: Low Quality; Unf: Unfinshed; None: No Basement|
 |BsmtFinSF1|Type 1 finished square feet|0 - 5644|
@@ -20,7 +20,7 @@
 |GarageArea|Size of garage in square feet|0 - 1418|
 |GarageFinish|Interior finish of the garage|Fin: Finished; RFn: Rough Finished; Unf: Unfinished; None: No Garage|
 |GarageYrBlt|Year garage was built|1900 - 2010|
-|GrLivArea|Above grade (ground) living area square feet|334 - 5642|
+|GrLivArea|Above ground living area square feet|334 - 5642|
 |KitchenQual|Kitchen quality|Ex: Excellent; Gd: Good; TA: Typical/Average; Fa: Fair; Po: Poor|
 |LotArea| Lot size in square feet|1300 - 215245|
 |LotFrontage| Linear feet of street connected to property|21 - 313|
@@ -66,8 +66,8 @@ Although your friend has an excellent understanding of property prices in her ow
 ### Page 2: Explore House Prices
 
 * Exploratory analysis of the housing market in Ames, Iowa
-  * Overview of house prices and attributes
-  * Distribution of variables in data
+  * Overview of house prices, attributes, and missingness
+  * Distribution of variables in data. Box plot and histogram are provided for numerical indicators and a bar plot for categorical ones.
   * Summary statistics for variables in data
 
 ### Page 3: Correlate House Price with Features
@@ -75,6 +75,8 @@ Although your friend has an excellent understanding of property prices in her ow
 * Correlation analysis of the house prices with house features
   * Correlation coefficients of house sale price with house features
   * Correlation heatmap of house sale price with features
+  * Visualisation of the relationship between house prices and a selected group of indicators. Scatterplots are provided for continuous indicators and box plots of house price for each potential outcome for categorical ones.
+  * Conclusions from the correlation analysis. 
 
 ## Unfixed Bugs
 
@@ -96,7 +98,108 @@ Although your friend has an excellent understanding of property prices in her ow
 
 ## Main Data Analysis and Machine Learning Libraries
 
-* Here you should list the libraries you used in the project and provide example(s) of how you used these libraries.
+This project uses the following Python libraries for data handling, visualisation, machine-learning pipeline creation, and interactive web application development.
+
+### **Streamlit**
+
+**Purpose:** Building the interactive web application and user interface.
+
+Streamlit is used for:
+
+* Creating the app layout and pages
+* Displaying interactive plots and tables
+* Collecting user inputs (e.g. feature selection, filters)
+
+**Example:**
+
+```python
+import streamlit as st
+
+st.write("## Exploratory Analysis of the Housing Market in Ames, Iowa")
+
+st.info(
+        f"* This section provides an understanding of house attributes and the sale price\n"
+        f"in the Ames, Iowa housing market"
+    )
+
+if st.checkbox("Inspect house prices and attributes"):
+        st.write(
+            f"* The dataset has {df.shape[0]} observations and {df.shape[1]} variables, "
+            f"find below the first 10 rows."
+        )
+```
+
+### **NumPy**
+
+**Purpose:** Numerical computations and array-based operations.
+
+NumPy is used for:
+
+* Efficient numerical transformations
+* Creating derived variables
+* Handling missing values and conditional logic
+
+**Example:**
+
+```python
+import numpy as np
+
+df["LogSalePrice"] = np.log(df["SalePrice"])
+```
+
+### **Matplotlib**
+
+**Purpose:** Plotting library used for custom visualisations.
+
+Matplotlib is used for:
+
+* Creating scatter plots, bar charts, and box plots
+* Fine-grained control over axes, labels, and layout
+* Serving as the base for Seaborn plots
+
+**Example:**
+
+```python
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(6, 4))
+sns.histplot(df['SalePrice'], kde=True)
+plt.title(f"Distribution of Sale Price")
+plt.xlabel("Sale Price")
+plt.ylabel("Frequency")
+plt.tight_layout()
+plt.show()
+```
+
+### **Seaborn**
+
+**Purpose:** Statistical data visualisation built on top of Matplotlib.
+
+Seaborn is used for:
+
+* Creating aesthetically pleasing statistical plots
+* Visualising distributions and relationships between variables
+* Generating boxplots and categorical comparisons
+
+**Example:**
+
+```python
+import seaborn as sns
+
+fig, ax = plt.subplots()
+sns.boxplot(
+    data=df,
+    x="KitchenQual",
+    y="SalePrice",
+    order=["Po", "Fa", "TA", "Gd", "Ex"],
+    ax=ax
+)
+
+ax.set_xlabel("Kitchen Quality")
+ax.set_ylabel("Sale Price")
+
+st.pyplot(fig)
+```
 
 ## Credits
 
