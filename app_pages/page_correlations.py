@@ -163,7 +163,7 @@ def page_correlations():
         st.success(
             "Most recently built houses tend to have higher prices, suggesting a premium for "
             "modern construction. However, the spread of points indicates that other factors may also play "
-            "important roles. the relationship is not as strong as with other features such as overall quality or size."
+            "important roles. The relationship is not as strong as with other features such as overall quality or size."
         )
 
     if st.checkbox("Visualize relationship between house price and kitchen quality"):
