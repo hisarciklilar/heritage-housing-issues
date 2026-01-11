@@ -49,7 +49,35 @@ Although your friend has an excellent understanding of property prices in her ow
 
 ## The rationale to map the business requirements to the Data Visualisations and ML tasks
 
-* To be added in the future version of the project: A list of business requirements and a rationale to map them to the Data Visualisations and ML tasks.
+The project follows a structured analytical approach to explore the relationships between house characteristics and sale prices and develop a Machine Learning pipeline to predict house prices with given features.
+
+### Data Collection
+
+This stage includes the following:
+
+* Download the data using the Kaggle API
+* Develop an understanding of the features provided in the data, how they are measured, and the possible values they can get by checking the information provided by the data source, and looking at the data cells at the few top and bottom rows of the data.
+
+### Exploratory Data Analysis
+
+Exploratory data analysis is provided under the "Explore HousePrices" page. 
+
+Exploratory analysis of the data includes strategies to develop an understanding of the data and the information it provides. The main steps at this stage are:
+
+* Checking the degree of missingness in the data, consideration of the possible reasons behind the missing observations (for example, the second floor area in square feet is likely to be missing for houses that do not have a second floor) and whether these can be imputed using the existing information.
+* For features measured in numerical scale, examining the descriptive statistics to have a preliminary understanding of the range of values that each feature takes, their central location and the variation they depict.
+* For features measured in categorical scale, examining the frequency distribution for each of the possible outcomes.
+* Visualisation of features using a plot style appropriate to the level of measurement. Box-Whisker plots and histograms are used for the features measured in numerical scale and bar charts are used for features measured by categorical scale.
+
+### Correlation Analysis
+
+Correlation analysis is provided under the "Correlate House Prices with Features" page.
+
+The correlation analysis looks at the strength of the relationship between house prices and the house features and sets the expectations about which features has greater or weaker effect on the house sale price. The analysis conducted here follows the steps below:
+
+* Calculation and ranking of correlation coefficient between the house price and each of the numerical features. In absoluter terms, the closer the value of the correlation coefficient to 1, the stronger the linear relationship between house price and the respective feature while the closer the correlation coefficient to zero, the weaker the linear relationship between them.
+* Visual demonstration of correlation coefficients between each of the numerical variables in the data through a heatmap. The heatmap colors the positive (same direction) correlations in red shades and the negative (opposite direction) correlations in blue shades. The stronger the degree of correlation, the darker the color is.
+* Visual representation of the degree of correlation between house price and a selected set of features that appeared to have strong correlation. Scatterplots are used for the numerical features and box-plots of house price for each potential outcome are used for the categorical features.
 
 ## ML Business Case
 
