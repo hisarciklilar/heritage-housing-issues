@@ -77,7 +77,17 @@ The correlation analysis looks at the strength of the relationship between house
 
 * Calculation and ranking of correlation coefficient between the house price and each of the numerical features. In absoluter terms, the closer the value of the correlation coefficient to 1, the stronger the linear relationship between house price and the respective feature while the closer the correlation coefficient to zero, the weaker the linear relationship between them.
 * Visual demonstration of correlation coefficients between each of the numerical variables in the data through a heatmap. The heatmap colors the positive (same direction) correlations in red shades and the negative (opposite direction) correlations in blue shades. The stronger the degree of correlation, the darker the color is.
-* Visual representation of the degree of correlation between house price and a selected set of features that appeared to have strong correlation. Scatterplots are used for the numerical features and box-plots of house price for each potential outcome are used for the categorical features.
+* Visual representation of the degree of correlation between house price and a selected set of features that appeared to have strong correlation. Scatter plots are used for the numerical features and box-plots of house price for each potential outcome are used for the categorical features.
+
+### Data Transformations
+
+There is information about 23 features in the dataset.
+
+* In addition to `1stFlrSF` and `2ndFlrSF`, there is information on `GrLiveArea`. Except 64 observations, 
+
+### Modelling
+
+The features 
 
 ## ML Business Case
 
