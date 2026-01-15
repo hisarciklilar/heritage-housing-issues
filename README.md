@@ -83,11 +83,11 @@ The correlation analysis looks at the strength of the relationship between house
 
 There is information about 23 features in the dataset.
 
-* In addition to `1stFlrSF` and `2ndFlrSF`, there is information on `GrLiveArea`. Except 64 observations, 
+* In addition to `1stFlrSF` and `2ndFlrSF`, there is information on `GrLivArea`, which appears to be the sum of the first and second flor area (with the exception of 64 observations). At the modelling stage, `GrLivArea` is used together with a second floor dummy for houses that have a second floor size greater than zero.  
 
 ### Modelling
 
-The features 
+The features (to be completed)
 
 ## ML Business Case
 
