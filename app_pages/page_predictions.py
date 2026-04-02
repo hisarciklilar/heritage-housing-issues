@@ -19,7 +19,8 @@ def format_currency(value):
 def page_predictions_body():
     st.write("### House Sale Price Prediction")
     st.info(
-        "Enter house attributes below to predict the sale price of a house in Ames, Iowa."
+        "This page addresses Business Requirement 2: predicting house sale prices "
+        "for the 4 inherited houses and for user-defined house attributes."
     )
 
     # Load pipeline
@@ -29,14 +30,53 @@ def page_predictions_body():
         st.error(f"Could not load pipeline: {e}")
         st.stop()
 
-    # Load dataset only if you want to use it later or check columns
-    try:
-        df = load_house_price_data()
-    except Exception as e:
-        st.warning(f"Dataset could not be loaded: {e}")
-        df = None
+    # --------------------------------------------------
+    # Section 1: 4 inherited houses
+    # --------------------------------------------------
+    st.write("## Predictions for the 4 inherited houses")
 
-    st.write("## Enter house features")
+    st.write("This section lists the characteristics of the 4 inherited houses and their predicted sale prices.")
+    st.write("The summed predicted sale price for all 4 houses is also displayed below.")
+
+    try:
+        inherited_df = load_inherited_house_price_data()
+        inherited_log_predictions = pipeline.predict(inherited_df)
+        inherited_predictions = np.exp(inherited_log_predictions)
+
+        with st.expander("Show characteristics of inherited houses"):
+            inherited_results = inherited_df.copy()
+            inherited_results["PredictedSalePrice"] = inherited_predictions
+            st.dataframe(inherited_results)
+
+        # inherited_results = inherited_df.copy()
+        # inherited_results['PredictedSalePrice'] = inherited_predictions
+        st.dataframe(pd.DataFrame({
+            "PredictedSalePrice": inherited_predictions
+        }))
+
+        total_price = inherited_results['PredictedSalePrice'].sum()
+        st.success(
+            f"The summed predicted sale price for all 4 inherited houses is "
+            f"**{format_currency(total_price)}**."
+        )
+
+    except FileNotFoundError:
+        st.warning(
+            "The file for the 4 inherited houses was not found. Please ensure it exists at 'outputs/datasets/collection/inherited_houses.csv'."
+        )
+    except Exception as e:
+        st.error(f"Could not predict prices for the inherited houses: {e}")
+
+    # --------------------------------------------------
+    # Section 2: interactive prediction
+    # --------------------------------------------------
+    st.write("---")
+    st.write("## Interactive house price prediction")
+
+
+    st.info(
+        "Enter house attributes below to predict the sale price of a house in Ames, Iowa."
+    )
 
     col1, col2 = st.columns(2)
 
