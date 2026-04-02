@@ -2,6 +2,14 @@ import streamlit as st
 import json
 from pathlib import Path
 import joblib
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+from src.data_management import load_train_test_data
+
+@st.cache_resource
+def load_pipeline():
+    return joblib.load("outputs/models/house_price_pipeline.joblib")
 
 
 def load_model_performance_metrics():
@@ -9,8 +17,28 @@ def load_model_performance_metrics():
     with open(metrics_path, "r") as f:
         metrics = json.load(f)
         return metrics
-   
+
+
+def plot_actual_vs_predicted(y_true, y_pred, title):
+
+    fig, ax = plt.subplots(figsize=(6, 6))
+
+    sns.scatterplot(x=y_true, y=y_pred, ax=ax)
+
+    # 45-degree reference line
+    min_val = min(y_true.min(), y_pred.min())
+    max_val = max(y_true.max(), y_pred.max())
+    ax.plot([min_val, max_val], [min_val, max_val], linestyle='--')
+
+    ax.set_xlabel("Actual Prices")
+    ax.set_ylabel("Predicted Prices")
+    ax.set_title(title)
+
+    return fig
+
+
 def page_technical_details_body():
+   
     st.title("Technical Details")
 
     st.markdown("""
@@ -117,7 +145,12 @@ def page_technical_details_body():
              The prediction workflow is automated through a machine learning pipeline.
     """)
 
-    pipeline = joblib.load("outputs/models/house_price_pipeline.joblib")
+    st.write("""The best model is the Random Forest with the following tuning parameters:
+    `Max_depth`: None, `'Min_samples_leaf`: 1, `Min_samples_split`: 2, `n_estimators`: 200. 
+    This model produces a CV score of 0.8649963104805998. 
+    """)
+
+    pipeline = load_pipeline()
 
     st.subheader("Pipeline Steps")
 
@@ -145,6 +178,35 @@ def page_technical_details_body():
     col2.metric("RMSE", f"{metrics['test']['RMSE']:,.4f}")
     col3.metric("MAE", f"{metrics['test']['MAE']:,.4f}")
 
+    X_train, X_test, y_train, y_test = load_train_test_data()
+
+    y_train_pred = pipeline.predict(X_train)
+    y_test_pred = pipeline.predict(X_test)
+
+    fig_train = plot_actual_vs_predicted(y_train, y_train_pred, "Train Data")
+    fig_test = plot_actual_vs_predicted(y_test, y_test_pred, "Test Data")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.subheader("Train")
+        st.pyplot(fig_train)
+
+    with col2:
+        st.subheader("Test")
+        st.pyplot(fig_test)
+
+    st.write("""The two plots provided above show the relationship between actual and predicted values for the train and test data.
+    The 45-degree line represents the ideal prediction where actual and predicted values are equal.
+    Hence, the closer the points are to the 45-degree reference line, the better the model's predictions match the actual values.
+    In the plots provided, the predicted logarithmic sales price and the actual logarithmic values are gathered around the 45-degree
+    line, which is suggestive of a good fit. There are a few visible exceptions, which deserve further exploration. For example,
+    the two houses in the test data that stand out on the left of the 45-degree line,
+    which have significantly higher predicted sales prices than the actual values.
+    House features for these outliers can be checked more closely to integrate any missing interactions
+    or outliers in data.   
+    """)
+    
     st.header("5. Limitations")
     st.write("""
     The predictions are based on patterns in the available dataset.
