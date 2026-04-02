@@ -6,10 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 from src.data_management import load_train_test_data
-
-@st.cache_resource
-def load_pipeline():
-    return joblib.load("outputs/models/house_price_pipeline.joblib")
+from src.data_management import load_pipeline
 
 
 def load_model_performance_metrics():

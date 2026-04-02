@@ -5,11 +5,7 @@ import numpy as np
 
 from src.data_management import load_house_price_data
 from src.data_management import load_inherited_house_price_data
-
-
-@st.cache_resource
-def load_pipeline():
-    return joblib.load("outputs/models/house_price_pipeline.joblib")
+from src.data_management import load_pipeline
 
 
 def format_currency(value):
