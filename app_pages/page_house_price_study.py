@@ -4,6 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from src.data_management import load_house_price_data
 
+
 def page_house_price_study_body():
 
     df = load_house_price_data()

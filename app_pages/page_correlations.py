@@ -4,13 +4,14 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from src.data_management import load_house_price_data
 
+
 def page_correlations():
 
     df = load_house_price_data()
 
     st.write("## Correlation Analysis of the House Prices with House Features")
     st.info(
-        f"* This section provides information on how house attributes " 
+        f"* This section provides information on how house attributes "
         f"correlate with house price"
         f"in the Ames, Iowa housing market"
     )
@@ -31,7 +32,7 @@ def page_correlations():
             "while a coefficient close to -1 implies a strong negative correlation. "
             "A coefficient around 0 indicates no correlation."
         )
-   
+
         st.write(corr)
 
         st.success(
@@ -65,7 +66,7 @@ def page_correlations():
         sns.heatmap(corr, cmap="coolwarm", center=0, annot=True, fmt="0.2f", 
             mask=mask, linewidths=1, cbar_kws={"shrink": 0.75}
         )
-        
+ 
         st.info(
             f"**Background Information:**\n\n"
             "A correlation heatmap visually represents the correlation coefficients "
@@ -90,7 +91,7 @@ def page_correlations():
             "Similarly, there is a strong correlation (0.83) between year the house was built and the year garage was built. "
             "At the modelling stage, these correlations should be considered to avoid multicollinearity issues."
         )
-    
+
     st.write("---")
 
     st.write("### Sale Price Relationships with Key House Features")
@@ -102,7 +103,7 @@ def page_correlations():
         ax.set_xlabel("Overall Quality")
         ax.set_ylabel("Sale Price")
         st.pyplot(fig)
-    
+
         st.success(
         f"Sale prices increase markedly with increasing levels of overall quality rating. "
         f"The increase appears to be exponential. "
