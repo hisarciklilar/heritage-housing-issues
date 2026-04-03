@@ -43,15 +43,41 @@ Although your friend has an excellent understanding of property prices in her ow
 * 1 - The client is interested in discovering how the house attributes correlate with the sale price. Therefore, the client expects data visualisations of the correlated variables against the sale price to show that.
 * 2 - The client is interested in predicting the house sale price from her four inherited houses and any other house in Ames, Iowa.
 
-## Hypothesis and how to validate?
+## Hypothesis and how to validate
 
-* Project hypothesis(es) and how they will ve validated will be added in the future version of the project.
+#### Overall Quality
+
+H1: There is a strong positive relationship between overall house quality (`OverallQual`) and sale price.
+
+#### Kitchen Quality
+
+H2: There is a positive relationship between kitchen quality (`KitchenQual`) and sale price.
+
+#### Living Area
+
+H3: There is a positive relationship between above-ground living area (`GrLivArea`) and sale price.
+
+#### Garage Area
+H4: There is a positive relationship between garage area (`GarageArea`) and sale price.
+
+#### Basement Area
+
+H5: There is a positive relationship between basement area (`TotalBsmtSF`) and sale price.
+
+The hypotheses listed above include a selected group of house characteristics that are expected to be highly correlated with sale price. The hypotheses are about the direction and strength of the relationship between each indicator and house sale price. These can be confirmed or rejected by a combination of the following tools:
+
+- Graphical representation of the relationship between each indicator and sales price. A scatterplot provides a very informative illustration for the numerical variables while box-plot of sales price for ordered possible outcomes of the ordinal categorical variable `KitchenQual` shows how price increases with quality rating.
+- Calculation of correlation coefficient between each numerical indicator and sale price. The four numerical indicators of `OverallQual`, `GrLivArea`, `GarageArea`, and `TotalBsmtSF` are ranked as indicators with the highest correlation coefficient.
+- Coefficient estimates and statistical significance tests based on Linear Regression (not reported for this project because Random Forest was selected and reported as the best performing method during comparisons of R2 score, RMSE and MAE)
+- Specific checks designed for Random Forest estimation, such as assessment of the predictive performance of each indicator.
 
 ## The rationale to map the business requirements to the Data Visualisations and ML tasks
 
 The project follows a structured analytical approach to explore the relationships between house characteristics and sale prices and develop a Machine Learning pipeline to predict house prices with given features.
 
 ### Data Collection
+
+Data collection is provided under the `01_Data_Collection` Jupyter notebook.
 
 This stage includes the following:
 
@@ -60,7 +86,7 @@ This stage includes the following:
 
 ### Exploratory Data Analysis
 
-Exploratory data analysis is provided under the "Explore HousePrices" page. 
+Exploratory data analysis is provided under the `02_Exploratory_Data_Analysis` Jupyter notebook. This notebook mainly addresses the first Business Requirement of discovering how house attributes correlate with house price and fulfills the client's expectation of seeing data visualisations of the correlated variables against the sale price.
 
 Exploratory analysis of the data includes strategies to develop an understanding of the data and the information it provides. The main steps at this stage are:
 
@@ -71,7 +97,7 @@ Exploratory analysis of the data includes strategies to develop an understanding
 
 ### Correlation Analysis
 
-Correlation analysis is provided under the "Correlate House Prices with Features" page.
+Correlation analysis is provided under the `03_Correlation_Analysis` Jupyter notebook.
 
 The correlation analysis looks at the strength of the relationship between house prices and the house features and sets the expectations about which features has greater or weaker effect on the house sale price. The analysis conducted here follows the steps below:
 
@@ -79,19 +105,203 @@ The correlation analysis looks at the strength of the relationship between house
 * Visual demonstration of correlation coefficients between each of the numerical variables in the data through a heatmap. The heatmap colors the positive (same direction) correlations in red shades and the negative (opposite direction) correlations in blue shades. The stronger the degree of correlation, the darker the color is.
 * Visual representation of the degree of correlation between house price and a selected set of features that appeared to have strong correlation. Scatter plots are used for the numerical features and box-plots of house price for each potential outcome are used for the categorical features.
 
-### Data Transformations
+### EDA and Feature Engineering Design
 
-There is information about 23 features in the dataset.
+A detailed exploratory data analysis and feature engineering design is provided under `04_EDA_and_Feature_Engineering_Design` Jupyter notebook. 
 
-* In addition to `1stFlrSF` and `2ndFlrSF`, there is information on `GrLivArea`, which appears to be the sum of the first and second flor area (with the exception of 64 observations). At the modelling stage, `GrLivArea` is used together with a second floor dummy for houses that have a second floor size greater than zero.  
+Exploratory Data Analysis in this notebook is taken to:
 
-### Modelling
+* Understand the missingness patterns in the data, while differentiating structural missing observations from random ones.
+* Decide on appropriate imputation approach based on the nature of missingness. For example, assign 'No_basement' to basement exposure (`BsmtExposure`) when total basement area is zero (`TotalBsmtSF`==0) or assign mean / median / mode value for indicators when there is random missingness.
+* Create binary dummies for cases where imputations were done for random missingness.
+* Where necessary, apply appropriate transformations to the features. For example, using logarithmic transformation for numerical features with a skewed distribution while doing this operation by adding 1 to the values of the indicators when there are zero values (log1p transformation).
+* Convert multinomial categorical variables into sets of dummies.
+* Create dummies based on outliers.
 
-The features (to be completed)
+Decisions on transformations and feature engineering steps are summarised in the table below:
+
+| Variable        | Action                                                            |
+|-----------------|-------------------------------------------------------------------|
+| `SalePrice`     | Logarithmic transformation                                        |
+| `1stFlrSF`      | Logarithmic transformation                                        |
+| `2ndFlrSF`      | (1) Replace missing with zero                                     |
+|                 | (2) Create `Has2ndFlr`                                            |
+|                 | (3) Create `HasExtraLivArea`                                      |
+| `GrLivArea`     | Logarithmic transformation                                        |
+| `BsmtFinSF1`    | (1) Log1p transformation                                          |
+|                 | (2) Create `HasBsmtFin`                                       |  
+| `BsmtUnfSF`     | (1) Log1p transformation                                          |
+|                 | (2) Create `HasBsmtUnf`                                           | 
+| `BsmtFinType1`  | (1) Replace missing with "No_basement" if TotalBsmtSF==0          |
+|                 | (2) Replace missing with "Unf" if `BsmtUnfSF>0` & `BsmtFinSF1==0` |
+|                 | (3) Create `MissingBsmtFinType1` variable                         |
+|                 | (4) Replace remaining missing with mode                           |
+|                 | (5) Create set of dummies based on categories                     |
+| `BsmtExposure`  | (1) Replace missing with "No_basement" if TotalBsmtSF==0          |
+|                 | (2) Replace remaining missing with "No" if TotalBsmtSF>0          | 
+|                 | (3) Create set of dummies based on categories                     |
+| `TotalBsmtSF`   | (1) Log1p transformation                                          |
+|                 | (2) Create `HasBasement`                                          |
+| `LotFrontage`   | (1) Create `MissingLotFrontage` variable                          |
+|                 | (2) Replace missing with zero                                     |
+|                 | (3) Log1p transformation                                          |
+| `LotArea`       | (1) Logarithmic transformation                                    |
+|                 | (2) Create `HasLargeLotArea`                                      |
+|                 | (3) Create `HasSmallLotArea`                                      |
+| `BedroomAbvGr`  | (1) Create `MissingBedroomAbvGr` variable                         |
+|                 | (2a) Replace missing with mean; Substitute: Impute with mode      |
+|                 | (2b) Replace missing with mode; Substitute: Impute with mean      |
+| `GarageArea`    | (1) Create `HasGarage`                                            |
+|                 | (2) Log1p transformation                                          |
+| `GarageFinish`  | (1) Replace missing with "No_garage" if `GarageArea`==0           |
+|                 | (2) Replace remaining missing with "Missing"                      |
+|                 | (3) Create set of dummies based on categories                     |
+| `MasVnrArea`    | (1) Create `MissingMasVnrArea` variable                           |
+|                 | (2) Replace missing with zero                                     |
+|                 | (3) Log1p transformation                                          |
+|                 | (4) Create `HasMasVnr`                                            |
+| `GarageYrBlt`   | (1) Create `MissingGarageYrBlt`                                   |
+|                 | (2) Replace missing with zero                                     |
+| `EnclosedPorch` | (1) Replace missing with zero                                     |
+|                 | (2) Create `TotalPorch` = `EnclosedPorch` + `OpenPorchSF`         |
+|                 | (3) Create `HasEnclosedPorch`                                     |
+| `OpenPorchSF`   | Create `HasOpenPorch`                                             |
+| `KitchenQual`   | Create set of dummies based on categories                         |
+| `WoodDeckSF`    | (1) Replace missing with zero                                     |
+|                 | (2) Create `HasWoodDeck`                                          |
+| `OverallCond`   | No change; include as it is provided in data                      |
+| `OverallQual`   | No change; include as it is provided in data                      |
+| `YearBuilt`     | No change; include as it is provided in data                      |
+|                 | Create `BuiltPre1950` for truncation of `YearRemodAdd` at 1950    |
+| `YearRemodAdd`  | Include together with `BuiltPre1950`                              |
+
+Table below also provide supporting information about the feature engineering decisions for the relevant sets of indicators:
+
+#### Logarithmic Transformations
+
+| Variable    | Notes                   |
+|-------------|-------------------------|
+| `SalePrice` | No missing observations |
+| `1stFlrSF`  | No missing observations |
+| `GrLivArea` | No missing observations |
+| `LotArea`   | No missing observations |
+
+### Logarithmic Transformations After adding One
+
+| Variable      | Notes                                                                          |
+|---------------|--------------------------------------------------------------------------------|
+| `BsmtFinSF1`  | No missing observations; Complement: `BsmtUnfSF`; Substitute: `TotalBsmtSF`    |
+| `BsmtUnfSF`   | No missing observations; Complement: `BsmtFinSF`; Substitute: `TotalBsmtSF`    |
+| `TotalBsmtSF` | No missing observations; Substitute: `BsmtFinSF1` and `BsmtUnfSF`              |
+| `GarageArea`  | No missing observations                                                        |
+| `LotFrontage` | Pre-action: Create `MissingLotFrontage`; Pre-action: replace missing with zero |
+| `MasVnrArea`  | Pre-action: Create `MissingMasVnrArea`; Pre-action: Replace missing with zero  |
+
+#### Replace missing with zero
+
+| Variable        | Notes                                                                                                 |
+|-----------------|-------------------------------------------------------------------------------------------------------|
+| `2ndFlrSF`      | Post-action: Create `Has2ndFlr` dummy                                                                 |
+| `GarageYrBlt`   | Replace missing with zero; Pre-action: Create `MissingGarageYrBlt`                                    |
+| `LotFrontage`   | Replace missing with zero; Pre-action: Create `MissingLotFrontage`; Post-action: Take log1p           |
+| `MasVnrArea`    | Replace missing with zero; Pre-action: Create `MissingMasVnrArea`; Post-action: Take log1p            |
+| `EnclosedPorch` | Replace missing with zero; Post-action: Create `TotalPorchSF`; Post-action: Create `HasEnclosedPorch` |
+| `WoodDeckSF`    | Replace missing with zero; Post-action: Create `HasWoodDeck`                                          |
+
+#### Imputation for missing cells (structural missing)
+
+| Variable       | Notes                                                                                                    |
+|----------------|----------------------------------------------------------------------------------------------------------|
+| `BedroomAbvGr` | Impute with mean; Substutute: Impute with Mode; Pre-action: Create `MissingBedroomAbvGr`                 |
+|                | Impute with mode; Substutute: Impute with mean; Pre-action: Create `MissingBedroomAbvGr`                 |
+| `BsmtExposure` | Replace missing with "No_basement" if TotalBsmtSf==0                                                     |
+|                | Replace remaining missing with "No" if TotalBsmtSF>0; Post-action: Dummyfy                               | 
+| `BsmtFinType1` | Replace missing with "No_basement" if TotalBsmtSf==0                                                     |
+|                | Replace missing with "Unf" if `BsmtUnfSF>0` & `BsmtFinSF1`==0; Post-action: Create `MissingBsmtFinType1` | 
+|                | Replace remaining missing with Mode; Pre-action: Create `MissingBsmtFinType1`                            |
+| `GarageFinish` | Replace missing with "No_garage"  if `GarageArea`==0                                                     |
+|                | Replace remaining missing with "Missing"; Post-action: Dummyfy                                           | 
+
+#### Dummies for Missingness at Random
+
+| Variable       | Variable Created      | Notes                                                                                                               |
+|----------------|-----------------------|---------------------------------------------------------------------------------------------------------------------|
+| `BedroomAbvGr` | `MissingBedroomAbvGr` | Post-action: Impute with mean; impute with mode                                                                     |
+| `BsmtFinType1` | `MissingBsmtFinType1` | Pre-action: Replace structural missings; Post-action: Replace random missings with mode; Post-action: Dummyfy       |
+| `LotFrontage`  | `MissingLotFrontage`  | Post-action: Replace missing with zero; Post-action: Take log1p                                                     |
+| `MasVnrArea`   | `MissingMasVnrArea`   | Post-action: Replace missing with zero                                                                              |
+| `GarageYrBlt`  | `MissingGarageYrBlt`  | Post-action: Replace missing with zero                                                                              |
+
+#### Create dummy groups for multinomial variables
+
+| Variable       | Variable Created                  | Notes                        |
+|----------------|-----------------------------------|------------------------------|
+| `BsmtExposure` | Set of dummies for `BsmtExposure` | Pre-action: Replace missings |
+| `BsmtFinType1` | Set of dummies for `BsmtFinType1` | Pre-action: Replace structural missings; Pre-action: Create `MissingBsmtFinType1`; Pre-action: Replace random missings with mode |
+| `GarageFinish` | Set of dummies for `GarageFinish` | Pre-action: Replace missings |
+| `KitchenQual`  | Set of dummies for `KitchenQual`  |                              |
+
+#### Create new feature variable (numerical)
+
+| New Variable   | Description                   | Notes                                                 |
+|----------------|-------------------------------|-------------------------------------------------------|
+| `TotalPorchSF` | `EnclosedPorch` + `OpenPorch` | Pre-action: Replace missing `EnclosedPorch` with zero |
+
+#### Create new feature variable (categorical)
+
+| New Variable       | Description                                             | Notes                                 |
+|--------------------|---------------------------------------------------------|---------------------------------------|
+| `Has2ndFlr`        | =1 if 2ndFlrSF>0; =0 otherwise                          | Pre-action: Replace missing `2ndFlrSF` with zero|
+| `HasExtraLivArea`  | =1 if `GrLivArea` > (`1stFlrSF` + `2ndFlrSF`); =0 otherwise | Pre-action: Replace missing `2ndFlrSF` with zero |  
+| `HasBasement`      | =1 if `TotalBsmtSF`>0; =0 otherwise                     |                                       |
+| `HasBsmtFin`       | =1 if `BsmtFinSF1`>0; =0 otherwise                      |                                       |
+| `HasBsmtUnf`       | =1 if `BsmtUnSF`>0; =0 otherwise                        |                                       |
+| `HasGarage`        | =1 if `GarageArea`>0; =0 otherwise                      |                                       |
+| `HasLargeLotArea`  | =1 if `LotArea`>`LotArea`.quantile(0.99); =0 otherwise  |                                       |
+| `HasSmallLotArea`  | = 1 if `LotArea`<`LotArea`.quantile(0.01); =0 otherwise |                                       |
+| `HasMasVnr`        | =1 if MasVnrArea>0; =0 otherwise                        |                                       |
+| `HasEnclosedPorch` | =1 if `EnclosedPorch`>0; =0 otherwise                   | Pre-action: Replace missing with zero |
+| `HasOpenPorch`     | =1 if `OpenPorchSF`>0; =0 otherwise                     |                                       | 
+| `HasWoodDeck`      | =1 if `WoodDeckSF`>0; =0 otherwise                      | Pre-action: Replace missing with zero |
+| `BuiltPre1950`     | =1 if `YearBuilt`<1950; =0 otherwise                    |                                       |
+
+#### No change variables
+
+| Variable       |
+| `OverallCond`  |
+| `OverallQual`  |
+| `YearBuilt`    |
+| `YearRemodAdd` |
+
+### Modelling and ML Pipeline
+
+Application of Feature Engineering and ML Pipeline development are provided under `05_Modelling_and_ML_Pipeline` Jupyter Notebook.
+
+* The feature engineering design decisions are applied to the data
+* Data is split into train and test samples
+* Three alternative predictive modelling approaches are applied to the test sample:
+  * Linear Regression
+  * Ridge Regression
+  * Random Forest
+* Hyperparameter tuning is applied on Ridge Regression and Random Forest
+* Fit and predictive performance of models are compared and evaluated in terms of the following indicators for both the train and test samples:
+  * R2 score
+  * RMSE
+  * MAE
+* Scatterplots showing the actual and predicted logatihmic sale prices are provided for both the train and test samples. A $45^o$ line is added to the plots to help with visual assessment of the fit.
+* **All models** estimated yielded an R2 above 0.80 (rounded to two decimal points), which is comfortably **above the 0.75 threshold** agreed with the customer.
+* **Random Forest** after hyperparameter tuning is demonstrated to provide the best fit with the highest predictive power with an **R2 score value of 0.91 for the train and 0.80 for the test samples**.
+
+### Inherited House Price Predictions
+
+Inherited house price predictions are provided under `06_Inherited_House_Price_Predictions` Jupyter notebook.
+
+* Sale price predictions for each of the four inherited houses are provided. The models are run for logarithmic sale prices, so the model predictions are converted back into levels using an anti-logarithmic transformation.
+* The total value of the four inherited houses are calculated by summing the predicted value (i.e. sale price) of each property.
 
 ## ML Business Case
 
-* To be added in the future version of the project.
+The customer wishes to (i) maximise the sale price of their four inherited properties, (ii) be able to predict the market value of a property with given characteristics.
 
 ## Dashboard Design
 
