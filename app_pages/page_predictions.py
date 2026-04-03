@@ -30,9 +30,9 @@ def page_predictions_body():
         st.error(f"Could not load pipeline: {e}")
         st.stop()
 
-    # --------------------------------------------------
+    # ----------------------------
     # Section 1: 4 inherited houses
-    # --------------------------------------------------
+    # ----------------------------
     st.write("## Predictions for the 4 inherited houses")
 
     st.write("This section lists the characteristics of the 4 inherited houses and their predicted sale prices.")
@@ -67,9 +67,9 @@ def page_predictions_body():
     except Exception as e:
         st.error(f"Could not predict prices for the inherited houses: {e}")
 
-    # --------------------------------------------------
+    # ---------------------------------
     # Section 2: interactive prediction
-    # --------------------------------------------------
+    # ---------------------------------
     st.write("---")
     st.write("## Interactive house price prediction")
 

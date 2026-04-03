@@ -76,16 +76,16 @@ def page_technical_details_body():
             |                 | (3) Create `HasExtraLivArea`                                      |
             | `GrLivArea`     | Logarithmic transformation                                        |
             | `BsmtFinSF1`    | (1) Log1p transformation                                          |
-            |                 | (2) Create `HasBsmtFin`                                       |  
+            |                 | (2) Create `HasBsmtFin`                                       | 
             | `BsmtUnfSF`     | (1) Log1p transformation                                          |
-            |                 | (2) Create `HasBsmtUnf`                                           | 
+            |                 | (2) Create `HasBsmtUnf`                                           |
             | `BsmtFinType1`  | (1) Replace missing with "No_basement" if TotalBsmtSF==0          |
             |                 | (2) Replace missing with "Unf" if `BsmtUnfSF>0` & `BsmtFinSF1==0` |
             |                 | (3) Create `MissingBsmtFinType1` variable                         |
             |                 | (4) Replace remaining missing with mode                           |
             |                 | (5) Create set of dummies based on categories                     |
             | `BsmtExposure`  | (1) Replace missing with "No_basement" if TotalBsmtSF==0          |
-            |                 | (2) Replace remaining missing with "No" if TotalBsmtSF>0          | 
+            |                 | (2) Replace remaining missing with "No" if TotalBsmtSF>0          |
             |                 | (3) Create set of dummies based on categories                     |
             | `TotalBsmtSF`   | (1) Log1p transformation                                          |
             |                 | (2) Create `HasBasement`                                          |
