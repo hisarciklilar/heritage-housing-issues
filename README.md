@@ -494,6 +494,99 @@ Scikit-learn is used for:
 * Model evaluation: assessing performance using metrics such as R2 score, RMSE, and MAE
 * Hyperparameter tuning: optimising model performance using GridSearchCV
 
+**Example:**
+
+```python
+import numpy as np
+import pandas as pd
+
+# sklearn - model selection
+from sklearn.model_selection import train_test_split
+
+# sklearn - preprocessing & pipelines
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import FunctionTransformer, OneHotEncoder
+from sklearn.impute import SimpleImputer
+
+# sklearn - models
+from sklearn.linear_model import LinearRegression
+
+# sklearn - evaluation
+from sklearn.metrics import mean_squared_error
+
+# Custom transformer
+from src.feature_engineering import FeatureEngineerHPData
+
+# Split data into train and test samples
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=34
+)
+
+# Define Variable Groups
+log_vars = ["1stFlrSF", "GrLivArea", "LotArea"]
+
+log1p_vars = [
+    "BsmtFinSF1",
+    "BsmtUnfSF",
+]
+
+numeric_and_binary_vars = [
+    "2ndFlrSF",
+    "MissingLotFrontage",
+    "HasBasement",
+    "BuiltPre1950"
+]
+
+categorical_vars = [
+    "KitchenQual"
+]
+
+# Preprocessing Pipelines
+log_transformer = Pipeline(steps=[
+    ("imputer", SimpleImputer(strategy="median")),
+    ("log", FunctionTransformer(np.log, feature_names_out="one-to-one"))
+])
+
+log1p_transformer = Pipeline(steps=[
+    ("imputer", SimpleImputer(strategy="median")),
+    ("log1p", FunctionTransformer(np.log1p, feature_names_out="one-to-one"))
+])
+
+numeric_transformer = Pipeline(steps=[
+    ("imputer", SimpleImputer(strategy="median"))
+])
+
+categorical_transformer = Pipeline(steps=[
+    ("imputer", SimpleImputer(strategy="most_frequent")),
+    ("onehot", OneHotEncoder(handle_unknown="ignore"))
+])
+
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("log", log_transformer, log_vars),
+        ("log1p", log1p_transformer, log1p_vars),
+        ("num", numeric_transformer, numeric_and_binary_vars),
+        ("cat", categorical_transformer, categorical_vars),
+    ],
+    remainder="drop"
+)
+
+# Linear Regression
+linear_pipeline = Pipeline(steps=[
+    ("feature_engineering", FeatureEngineerHPData(bedroom_impute_strategy="mean")),
+    ("preprocessor", preprocessor),
+    ("model", LinearRegression())
+])
+linear_pipeline.fit(X_train, y_train)
+y_pred_linear = linear_pipeline.predict(X_test)
+linear_rmse = np.sqrt(mean_squared_error(y_test, y_pred_linear))
+print(f"Linear Regression RMSE: {linear_rmse:.4f}")
+```
+
 ### **Joblib**
 
 **Purpose:** Save and load trained machine learning models and pipelines.
@@ -502,6 +595,17 @@ Joblib is used for:
 
 * Saving the trained pipeline (including preprocessing and model)
 * Loading the saved model in the Streamlit app without the need for retraining
+
+**Example:**
+
+```python
+import joblib
+
+final_model = best_rf
+
+joblib.dump(final_model, "outputs/models/house_price_pipeline.joblib")
+print("Pipeline saved successfully.")
+```
 
 ## Credits
 
