@@ -12,8 +12,13 @@ def page_correlations():
     st.write("## Correlation Analysis of the House Prices with House Features")
     st.info(
         f"* This section provides information on how house attributes "
-        f"correlate with house price"
-        f"in the Ames, Iowa housing market"
+        f"correlate with house price "
+        f"in the Ames, Iowa housing market\n\n"
+        f"* Information provided below successfully addresses the first "
+        f"Business Requirement of discovering how house attributes "
+        f"correlate with house price and fulfills the expectation of seeing "
+        f"data visualisations of the correlated variables against "
+        f"the sale price."
     )
 
     st.write(
@@ -202,10 +207,14 @@ def page_correlations():
     st.markdown("### Conclusions")
     st.markdown(
         """
-    - Sale price in Ames is strongly influenced by **house quality**, **living space**, and
-    **key amenities** such as basements and garages.
-    - The correlation coefficients and the visual insights help identify which attributes are most relevant when pricing
-    the client's inherited properties.
+    - Sale price in Ames is strongly influenced by **house quality**,
+    **living space**, and **key amenities** such as basements and garages.
+    - The correlation coefficients and the visual insights help identify which
+    attributes are most relevant when pricing the client's inherited
+    properties.
+    - The most important house features that correlate with sale price are
+    identified as **overall quality of the house, above-ground living area,
+    basement size, garage size, and kitchen quality**.
     - The same features will be prioritised as inputs to the machine-learning model used
     for sale price prediction.
     """

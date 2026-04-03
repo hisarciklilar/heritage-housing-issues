@@ -66,10 +66,13 @@ H5: There is a positive relationship between basement area (`TotalBsmtSF`) and s
 
 The hypotheses listed above include a selected group of house characteristics that are expected to be highly correlated with sale price. The hypotheses are about the direction and strength of the relationship between each indicator and house sale price. These can be confirmed or rejected by a combination of the following tools:
 
-- Graphical representation of the relationship between each indicator and sales price. A scatterplot provides a very informative illustration for the numerical variables while box-plot of sales price for ordered possible outcomes of the ordinal categorical variable `KitchenQual` shows how price increases with quality rating.
-- Calculation of correlation coefficient between each numerical indicator and sale price. The four numerical indicators of `OverallQual`, `GrLivArea`, `GarageArea`, and `TotalBsmtSF` are ranked as indicators with the highest correlation coefficient.
-- Coefficient estimates and statistical significance tests based on Linear Regression (not reported for this project because Random Forest was selected and reported as the best performing method during comparisons of R2 score, RMSE and MAE)
-- Specific checks designed for Random Forest estimation, such as assessment of the predictive performance of each indicator.
+* Graphical representation of the relationship between each indicator and sales price. A scatterplot provides a very informative illustration for the numerical variables while box-plot of sales price for ordered possible outcomes of the ordinal categorical variable `KitchenQual` shows how price increases with quality rating.
+
+* Calculation of correlation coefficient between each numerical indicator and sale price. The four numerical indicators of `OverallQual`, `GrLivArea`, `GarageArea`, and `TotalBsmtSF` are ranked as indicators with the highest correlation coefficient.
+
+* Coefficient estimates and statistical significance tests based on Linear Regression (not reported for this project because Random Forest was selected and reported as the best performing method during comparisons of R2 score, RMSE and MAE).
+
+* Specific checks designed for Random Forest estimation, such as assessment of the predictive performance of each indicator.
 
 ## The rationale to map the business requirements to the Data Visualisations and ML tasks
 
@@ -86,7 +89,7 @@ This stage includes the following:
 
 ### Exploratory Data Analysis
 
-Exploratory data analysis is provided under the `02_Exploratory_Data_Analysis` Jupyter notebook. This notebook mainly addresses the first Business Requirement of discovering how house attributes correlate with house price and fulfills the client's expectation of seeing data visualisations of the correlated variables against the sale price.
+Exploratory data analysis is provided under the `02_Exploratory_Data_Analysis` Jupyter notebook.
 
 Exploratory analysis of the data includes strategies to develop an understanding of the data and the information it provides. The main steps at this stage are:
 
@@ -99,6 +102,8 @@ Exploratory analysis of the data includes strategies to develop an understanding
 
 Correlation analysis is provided under the `03_Correlation_Analysis` Jupyter notebook.
 
+This notebook mainly addresses the first Business Requirement of discovering how house attributes correlate with house price and fulfills the client's expectation of seeing data visualisations of the correlated variables against the sale price.
+
 The correlation analysis looks at the strength of the relationship between house prices and the house features and sets the expectations about which features has greater or weaker effect on the house sale price. The analysis conducted here follows the steps below:
 
 * Calculation and ranking of correlation coefficient between the house price and each of the numerical features. In absoluter terms, the closer the value of the correlation coefficient to 1, the stronger the linear relationship between house price and the respective feature while the closer the correlation coefficient to zero, the weaker the linear relationship between them.
@@ -107,7 +112,7 @@ The correlation analysis looks at the strength of the relationship between house
 
 ### EDA and Feature Engineering Design
 
-A detailed exploratory data analysis and feature engineering design is provided under `04_EDA_and_Feature_Engineering_Design` Jupyter notebook. 
+A detailed exploratory data analysis and feature engineering design is provided under `04_EDA_and_Feature_Engineering_Design` Jupyter notebook.
 
 Exploratory Data Analysis in this notebook is taken to:
 
@@ -277,6 +282,8 @@ Table below also provide supporting information about the feature engineering de
 
 Application of Feature Engineering and ML Pipeline development are provided under `05_Modelling_and_ML_Pipeline` Jupyter Notebook.
 
+This notebook, together with `06_Inherited_House_Price_Predictions` address the second Business Requirement of predicting the house sale prices from the customer's four inherited houses, and any other house in Ames.
+
 * The feature engineering design decisions are applied to the data
 * Data is split into train and test samples
 * Three alternative predictive modelling approaches are applied to the test sample:
@@ -296,12 +303,16 @@ Application of Feature Engineering and ML Pipeline development are provided unde
 
 Inherited house price predictions are provided under `06_Inherited_House_Price_Predictions` Jupyter notebook.
 
+This notebook, together with `05_Modelling_and_ML_Pipeline` address the second Business Requirement of predicting the house sale prices from the customer's four inherited houses, and any other house in Ames.
+
 * Sale price predictions for each of the four inherited houses are provided. The models are run for logarithmic sale prices, so the model predictions are converted back into levels using an anti-logarithmic transformation.
 * The total value of the four inherited houses are calculated by summing the predicted value (i.e. sale price) of each property.
 
 ## ML Business Case
 
-The customer wishes to (i) maximise the sale price of their four inherited properties, (ii) be able to predict the market value of a property with given characteristics.
+According to the second Business Requirement, the customer is interested in predicting the house sale prices from their four inherited houses, and any other house in Ames, Iowa. They also want to predict the total market value of these four properties.
+
+While the correlation analysis provides information about the relationship of each given house characteristic with the sale price, and also demonstrate the strength of this relationship, a prediction of the market value should consider the combined effect of the set of characteristics. Application of a Machine Learning approach is crucial to address the second Business Requirement through a predictive analysis.
 
 ## Dashboard Design
 
@@ -320,15 +331,37 @@ The customer wishes to (i) maximise the sale price of their four inherited prope
 
 ### Page 3: Correlate House Price with Features
 
+This page provides information on how house attributes correlate with house price in the Ames, Iowa housing market. **It successfully addresses the first Business Requirement of discovering how house attributes correlate with house price and fulfills the expectation of seeing data visualisations of the correlated variables against the sale price.**
+
 * Correlation analysis of the house prices with house features
   * Correlation coefficients of house sale price with house features
   * Correlation heatmap of house sale price with features
   * Visualisation of the relationship between house prices and a selected group of indicators. Scatterplots are provided for continuous indicators and box plots of house price for each potential outcome for categorical ones.
-  * Conclusions from the correlation analysis. 
+  * Conclusions from the correlation analysis.
+
+### Page 4: Project Hypotheses
+
+This page lists five hypotheses about the relationships between house characteristics and how decision on each of these are made.
+
+### Page 5: Predict House Sale Prices
+
+This page successfully addresses the second Business Requirement of predicting the house sale prices from the customer's four inherited houses, and any other house in Ames. It also provides a prediction for the total market value of the four inherited houses.
+
+### Page 6: Technical Details
+
+This page provides technical details about the analysis conducted.
+
+* Data source
+* Data preparation and feature engineering
+* Model pipeline, pipeline steps
+* Model performance indicators (R2 score, RMSE and MAE) of the best performing Random Forest model for the test and train samples
+* Graphical representation of the actual and predicted logarithmic sales prices for the train and test samples.
+* Limitations
 
 ## Unfixed Bugs
 
-* You will need to mention unfixed bugs and why they were not fixed. This section should include shortcomings of the frameworks or technologies used. Although time can be a big variable to consider, paucity of time and difficulty understanding implementation is not valid reason to leave bugs unfixed.
+* A careful planning needs to be made in relation to the missing information for the house characteristics, in particular for the ML pipeline predictions.
+* House price predictions page on the dashboard allows users to enter characteristics of a house to predict its price. The form on the page requires all features to be entered by the user. The page can improve to pre-populate the form with common numbers/categories for the features not only to save time, but also help the user to decide when a feature value is unknown.
 
 ## Deployment
 
@@ -342,7 +375,7 @@ The customer wishes to (i) maximise the sale price of their four inherited prope
 3. Select your repository name and click Search. Once it is found, click Connect.
 4. Select the branch you want to deploy, then click Deploy Branch.
 5. The deployment process should happen smoothly if all deployment files are fully functional. Click the button Open App on the top of the page to access your App.
-6. If the slug size is too large then add large files not required for the app to the .slugignore file. You may also demove the redundant files from the repository. 
+6. If the slug size is too large then add large files not required for the app to the .slugignore file. You may also remove the redundant files from the repository.
 
 ## Main Data Analysis and Machine Learning Libraries
 
@@ -449,7 +482,31 @@ ax.set_ylabel("Sale Price")
 st.pyplot(fig)
 ```
 
+### **Scikit-learn**
+
+**Purpose:** Build, train, and evaluate the machine learning pipeline for predicting house prices.
+
+Scikit-learn is used for:
+
+* Data preprocessing: handling missing values (SimpleImputer), scaling, and transforming features
+* Feature engineering pipeline: combining multiple transformations using Pipeline and ColumnTransformer
+* Model training: fitting algorithms such as Linear Regression, Ridge Regression and Random Forest for prediction of house prices
+* Model evaluation: assessing performance using metrics such as R2 score, RMSE, and MAE
+* Hyperparameter tuning: optimising model performance using GridSearchCV
+
+### **Joblib**
+
+**Purpose:** Save and load trained machine learning models and pipelines.
+
+Joblib is used for:
+
+* Saving the trained pipeline (including preprocessing and model)
+* Loading the saved model in the Streamlit app without the need for retraining
+
 ## Credits
 
-* Contents of `multipage.py` are copied from Code Instiude Walkthrough Project 2: Churnometer files
+* Contents of `multipage.py` are copied from Code Institute Walkthrough Project 2: Churnometer files
 * `page_summary.py` is also a modified version of the example provided by Code Institute in the Walkthrough Project 2: Churnometer files
+* ChatGPT for:
+  * resolving issues encountered in relation to Heroku deployment
+  * getting my head around the try-except block to handle exceptions in Python.

@@ -214,6 +214,9 @@ def page_technical_details_body():
     They should not be interpreted as guaranteed market values.
     Only a limited number of models were compared for this project.
     Model performance may improve after a more careful examination of outliers,
-    and integrating some non-linearities or interactions between house features. 
-    Alternative modelling strategies may also be adopted.
+    and integrating some non-linearities or interactions between house
+    features.
+    Alternative modelling strategies may also be adopted.\n
+    Also note that the model is trained on data from Ames, Iowa, and
+    may not generalise to other locations.
     """)
