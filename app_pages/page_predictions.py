@@ -15,8 +15,12 @@ def format_currency(value):
 def page_predictions_body():
     st.write("### House Sale Price Prediction")
     st.info(
-        "This page addresses Business Requirement 2: predicting house sale prices "
-        "for the 4 inherited houses and for user-defined house attributes."
+        f"This page successfully addresses Business Requirement 2: \n "
+        f"* Predict house sale prices for the 4 inherited houses, and \n "
+        f"* Predict house sale prices for any other house in Ames based on "
+        f"user-provided house attributes.\n "
+        f"* Provide a prediction for the total market value of the four "
+        f"inherited houses."
     )
 
     # Load pipeline
