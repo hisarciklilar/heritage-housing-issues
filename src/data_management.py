@@ -35,8 +35,4 @@ def load_train_test_data():
 def load_pipeline():
     pipeline_path = PROJECT_ROOT / "outputs" / "models" / "house_price_pipeline.joblib"
 
-    st.write("PROJECT_ROOT:", PROJECT_ROOT)
-    st.write("Pipeline path:", pipeline_path)
-    st.write("Pipeline exists:", pipeline_path.exists())
-
     return joblib.load(pipeline_path)

@@ -195,16 +195,19 @@ def page_technical_details_body():
 
     st.write("""The two plots provided above show the relationship between
     actual and predicted values for the train and test data. The 45-degree
-    line represents the ideal prediction where actual and predicted values are equal.
-    Hence, the closer the points are to the 45-degree reference line, the better the model's predictions match the actual values.
-    In the plots provided, the predicted logarithmic sales price and the actual logarithmic values are gathered around the 45-degree
-    line, which is suggestive of a good fit. There are a few visible exceptions, which deserve further exploration. For example,
-    the two houses in the test data that stand out on the left of the 45-degree line,
-    which have significantly higher predicted sales prices than the actual values.
-    House features for these outliers can be checked more closely to integrate any missing interactions
-    or outliers in data.   
+    line represents the ideal prediction where actual and predicted values
+    are equal. Hence, the closer the points are to the 45-degree reference
+    line, the better the model's predictions match the actual values.
+    In the plots provided, the predicted logarithmic sales price and the
+    actual logarithmic values are gathered around the 45-degree line,
+    which is suggestive of a good fit. There are a few visible exceptions,
+    which deserve further exploration. For example, the two houses in the test
+    data that stand out on the left of the 45-degree line, which have
+    significantly higher predicted sales prices than the actual values.
+    House features for these outliers can be checked more closely to integrate
+    any missing interactions or outliers in data.
     """)
-    
+
     st.header("5. Limitations")
     st.write("""
     The predictions are based on patterns in the available dataset.
